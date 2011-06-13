@@ -2216,7 +2216,7 @@ void wm8994_set_playback_bluetooth(struct snd_soc_codec *codec)
 	wm8994_write(codec, WM8994_DAC2_RIGHT_MIXER_ROUTING, val);
 
 	/*Volume*/
-	wm8994_write(codec, WM8994_DAC2_LEFT_VOLUME, 0x00C0);
+	wm8994_write(codec, WM8994_DAC2_LEFT_VOLUME, 0x01C0);
 	wm8994_write(codec, WM8994_DAC2_RIGHT_VOLUME, 0x01C0); 
 
 	wm8994_write(codec, WM8994_AIF2_CLOCKING_1, 0x0019);
@@ -2544,7 +2544,7 @@ void wm8994_set_voicecall_receiver(struct snd_soc_codec *codec)
 	wm8994_write(codec, WM8994_AIF2_DAC_FILTERS_1, 0x0000 );	//AIF2DAC Unmute, Mono Mix diable, Fast Ramp
 
 	wm8994_write(codec, WM8994_DAC2_MIXER_VOLUMES, 0x000C);	
-	wm8994_write(codec, WM8994_DAC2_LEFT_VOLUME, 0x00C0 );	
+	wm8994_write(codec, WM8994_DAC2_LEFT_VOLUME, 0x01C0 );	
 	wm8994_write(codec, WM8994_DAC2_RIGHT_VOLUME, 0x01C0 );	
 
 	// Tx -> AIF2 Path
@@ -3907,7 +3907,7 @@ void wm8994_set_voicecall_bluetooth(struct snd_soc_codec *codec)
 
 	wm8994_write(codec, WM8994_DAC2_MIXER_VOLUMES, 0x000C); 
 
-	wm8994_write(codec, WM8994_DAC2_LEFT_VOLUME, 0x00C0);
+	wm8994_write(codec, WM8994_DAC2_LEFT_VOLUME, 0x01C0);
 	wm8994_write(codec, WM8994_DAC2_RIGHT_VOLUME, 0x01C0); 
 
 	wm8994_write(codec, WM8994_OVERSAMPLING, 0X0000);

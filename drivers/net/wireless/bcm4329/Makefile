@@ -61,12 +61,9 @@ ifeq ($(CONFIG_BCM_EMBED_FW),y)
 	EXTRA_CFLAGS		+= -DIMAGE_NAME="4325b0/sdio-g-cdc-reclaim-wme"
 endif
 
-EXTRA_CFLAGS += -I$(src)/src/include/
-EXTRA_CFLAGS += -I$(src)/src/dhd/sys/
-EXTRA_CFLAGS += -I$(src)/src/dongle/
-EXTRA_CFLAGS += -I$(src)/src/bcmsdio/sys/
-EXTRA_CFLAGS += -I$(src)/src/wl/sys/
-EXTRA_CFLAGS += -I$(src)/src/shared/
+EXTRA_CFLAGS += -I$(src)/include/
+EXTRA_CFLAGS += -I$(src)
+EXTRA_LDFLAGS += --strip-debug
 
 KBUILD_CFLAGS += -I$(LINUXDIR)/include -I$(shell pwd)
 
@@ -74,28 +71,28 @@ KBUILD_CFLAGS += -I$(LINUXDIR)/include -I$(shell pwd)
 #obj-$(CONFIG_BROADCOM_WIFI)-m	+= dhd.o
 obj-m	+= dhd.o
 
-dhd-y := src/dhd/sys/dhd_linux.o \
-         src/dhd/sys/dhd_common.o \
-         src/dhd/sys/dhd_cdc.o \
-         src/dhd/sys/dhd_linux_sched.o\
-         src/dhd/sys/dhd_sdio.o \
-         src/dhd/sys/dhd_custom_gpio.o \
-         src/shared/aiutils.o \
-         src/shared/bcmutils.o \
-         src/shared/bcmwifi.o \
-         src/shared/hndpmu.o \
-         src/shared/linux_osl.o \
-         src/shared/sbutils.o \
-         src/shared/siutils.o \
-         src/bcmsdio/sys/bcmsdh_sdmmc.o \
-         src/bcmsdio/sys/bcmsdh.o \
-         src/bcmsdio/sys/bcmsdh_linux.o \
-         src/bcmsdio/sys/bcmsdh_sdmmc_linux.o \
-         src/wl/sys/wl_iw.o
+dhd-y := dhd_linux.o \
+         dhd_common.o \
+         dhd_cdc.o \
+         dhd_linux_sched.o\
+         dhd_sdio.o \
+         dhd_custom_gpio.o \
+         aiutils.o \
+         bcmutils.o \
+         bcmwifi.o \
+         hndpmu.o \
+         linux_osl.o \
+         sbutils.o \
+         siutils.o \
+         bcmsdh_sdmmc.o \
+         bcmsdh.o \
+         bcmsdh_linux.o \
+         bcmsdh_sdmmc_linux.o \
+         wl_iw.o
 
 ifeq ($(CONFIG_TARGET_LOCALE_KOR),y)
-dhd-y := $(dhd-y:src/dhd/sys/dhd_common.o=src/dhd/sys/dhd_common_skt.o)
-dhd-y := $(dhd-y:src/wl/sys/wl_iw.o=src/wl/sys/wl_iw_skt.o)
+dhd-y := $(dhd-y:dhd_common.o=dhd_common_skt.o)
+dhd-y := $(dhd-y:wl_iw.o=wl_iw_skt.o)
 endif
 
 all:
@@ -104,25 +101,7 @@ all:
 		SUBDIRS=$(CURDIR) modules
 
 clean: 
-	rm -rf *.o *.ko *.mod.c *~ .*.cmd Module.symvers modules.order .tmp_versions	\
-	 	 src/dhd/sys/dhd_linux.o \
-         src/dhd/sys/dhd_common*.o \
-         src/dhd/sys/dhd_cdc.o \
-         src/dhd/sys/dhd_linux_sched.o\
-         src/dhd/sys/dhd_sdio.o \
-         src/dhd/sys/dhd_custom_gpio.o \
-         src/shared/aiutils.o \
-         src/shared/bcmutils.o \
-         src/shared/bcmwifi.o \
-         src/shared/hndpmu.o \
-         src/shared/linux_osl.o \
-         src/shared/sbutils.o \
-         src/shared/siutils.o \
-         src/bcmsdio/sys/bcmsdh_sdmmc.o \
-         src/bcmsdio/sys/bcmsdh.o \
-         src/bcmsdio/sys/bcmsdh_linux.o \
-         src/bcmsdio/sys/bcmsdh_sdmmc_linux.o \
-         src/wl/sys/wl_iw.o
+	rm -rf *.o *.ko *.mod.c *~ .*.cmd Module.symvers modules.order .tmp_versions
 
 install:
 	@$(MAKE) --no-print-directory -C $(KDIR) \

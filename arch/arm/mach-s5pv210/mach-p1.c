@@ -455,15 +455,13 @@ static struct s5p_media_device crespo_media_devs[] = {
 		.memsize = S5PV210_VIDEO_SAMSUNG_MEMSIZE_TEXSTREAM,
 		.paddr = 0,
 	},
-#ifdef CONFIG_WLAN_SAMSUNG_MEMSIZE_BCM
 	[10] = {
 		.id = S3C_MDEV_WIFI,
 		.name = "wifi",
 		.bank = 0,
-		.memsize = CONFIG_WLAN_SAMSUNG_MEMSIZE_BCM * SZ_1K,
+		.memsize = 256 * SZ_1K,
 		.paddr = 0,
 	},
-#endif	
 };
 
 /* MAX8998 LDO */

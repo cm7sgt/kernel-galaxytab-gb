@@ -66,10 +66,8 @@ EXTRA_LDFLAGS += --strip-debug
 KBUILD_CFLAGS += -I$(LINUXDIR)/include -I$(shell pwd)
 
 
-#obj-$(CONFIG_BROADCOM_WIFI)-m	+= dhd.o
-obj-m	+= dhd.o
-
-dhd-y := dhd_linux.o \
+obj-$(CONFIG_BCM4329) += bcm4329.o
+bcm4329-objs := dhd_linux.o \
          dhd_common.o \
          dhd_cdc.o \
          dhd_linux_sched.o\
@@ -89,8 +87,8 @@ dhd-y := dhd_linux.o \
          wl_iw.o
 
 ifeq ($(CONFIG_TARGET_LOCALE_KOR),y)
-dhd-y := $(dhd-y:dhd_common.o=dhd_common_skt.o)
-dhd-y := $(dhd-y:wl_iw.o=wl_iw_skt.o)
+bcm4329-objs := $(bcm4329-objs:dhd_common.o=dhd_common_skt.o)
+bcm4329-objs := $(bcm4329-objs:wl_iw.o=wl_iw_skt.o)
 endif
 
 all:

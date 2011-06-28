@@ -381,8 +381,9 @@ static struct s3cfb_lcd lvds = {
 #define  S5PV210_VIDEO_SAMSUNG_MEMSIZE_FIMD 		(4800 * SZ_1K)
 #define  S5PV210_VIDEO_SAMSUNG_MEMSIZE_JPEG 		(14100 * SZ_1K)
 #define  S5PV210_VIDEO_SAMSUNG_MEMSIZE_PMEM 		(8192 * SZ_1K)
-#define  S5PV210_VIDEO_SAMSUNG_MEMSIZE_PMEM_GPU1 (4200 * SZ_1K)
-#define  S5PV210_VIDEO_SAMSUNG_MEMSIZE_TEXSTREAM (4800 * SZ_1K)
+#define  S5PV210_VIDEO_SAMSUNG_MEMSIZE_PMEM_GPU1 	(4200 * SZ_1K)
+#define  S5PV210_ANDROID_PMEM_MEMSIZE_PMEM_ADSP 	(1500 * SZ_1K)
+#define  S5PV210_VIDEO_SAMSUNG_MEMSIZE_TEXSTREAM 	(4800 * SZ_1K)
 
 static struct s5p_media_device crespo_media_devs[] = {
 	[0] = {
@@ -449,13 +450,20 @@ static struct s5p_media_device crespo_media_devs[] = {
 		.paddr = 0,
 	},
 	[9] = {
+		.id = S5P_MDEV_PMEM_ADSP,
+		.name = "pmem_adsp",
+		.bank = 0,
+		.memsize = S5PV210_ANDROID_PMEM_MEMSIZE_PMEM_ADSP,
+		.paddr = 0,
+	},
+	[10] = {
 		.id = S5P_MDEV_TEXSTREAM,
 		.name = "texstream",
 		.bank = 0,
 		.memsize = S5PV210_VIDEO_SAMSUNG_MEMSIZE_TEXSTREAM,
 		.paddr = 0,
 	},
-	[10] = {
+	[11] = {
 		.id = S3C_MDEV_WIFI,
 		.name = "wifi",
 		.bank = 0,

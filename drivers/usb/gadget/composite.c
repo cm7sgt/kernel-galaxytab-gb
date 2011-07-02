@@ -56,6 +56,9 @@ struct os_string_descriptor_set {
 
 typedef struct os_string_descriptor_set os_string_descriptor_set;
 #endif
+
+extern int askon_status;
+
 static struct usb_composite_driver *composite;
 
 /* Some systems will need runtime overrides for the  product identifers
@@ -128,16 +131,16 @@ void usb_composite_force_reset(struct usb_composite_dev *cdev)
 
 	spin_lock_irqsave(&cdev->lock, flags);
 	/* force reenumeration */
-	if (cdev && cdev->gadget &&
-			cdev->gadget->speed != USB_SPEED_UNKNOWN) {
-		/* avoid sending a disconnect switch event until after we disconnect */
-		INFO(cdev, "mute_switch is set\n");
-		cdev->mute_switch = 1;
+	if (cdev && cdev->gadget && cdev->gadget->speed != USB_SPEED_UNKNOWN) {
 		spin_unlock_irqrestore(&cdev->lock, flags);
 
 		usb_gadget_disconnect(cdev->gadget);
 		msleep(10);
 		usb_gadget_connect(cdev->gadget);
+	} else if (cdev && cdev->gadget && askon_status) {
+                spin_unlock_irqrestore(&cdev->lock, flags);
+                usb_gadget_connect(cdev->gadget);
+
 	} else {
 		spin_unlock_irqrestore(&cdev->lock, flags);
 	}
@@ -897,7 +900,7 @@ composite_setup(struct usb_gadget *gadget, const struct usb_ctrlrequest *ctrl)
 	u16				w_length = le16_to_cpu(ctrl->wLength);
 	struct usb_function		*f = NULL;
 	u8				endp;
-	unsigned long			flags;
+
 #ifdef CONFIG_USB_ANDROID_SAMSUNG_COMPOSITE
 	int i;
 /* soonyong.cho : Added handler to respond to host about MS OS Descriptors.
@@ -910,12 +913,16 @@ composite_setup(struct usb_gadget *gadget, const struct usb_ctrlrequest *ctrl)
 	 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 	 
 #endif
+
+	unsigned long	flags;
+	
 	spin_lock_irqsave(&cdev->lock, flags);
 	if (!cdev->connected) {
 		cdev->connected = 1;
 		schedule_work(&cdev->switch_work);
 	}
 	spin_unlock_irqrestore(&cdev->lock, flags);
+
 	/* partial re-init of the response message; the function or the
 	 * gadget might need to intercept e.g. a control-OUT completion
 	 * when we delegate to it.
@@ -1160,9 +1167,6 @@ unknown:
 	}
 
 done:
-	if(cdev->mute_switch) {
-		cdev->mute_switch = 0;
-	}
 	/* device either stalls (value < 0) or reports success */
 	return value;
 }
@@ -1179,17 +1183,9 @@ static void composite_disconnect(struct usb_gadget *gadget)
 	if (cdev->config)
 		reset_config(cdev);
 
-	if (cdev->mute_switch) {
-	/* Replace below sequence (mute_switch value set 0),
-     * some times, disconnect is called more then one time.
-	 * mode 0x8 is tethering. tethering does not notify disconnection event.
-	 */
-		cdev->mute_switch = 0;
-	}
-	else {
-        cdev->connected = 0;
-		schedule_work(&cdev->switch_work);
-	}
+	cdev->connected = 0;
+	schedule_work(&cdev->switch_work);
+
 	spin_unlock_irqrestore(&cdev->lock, flags);
 }
 
@@ -1254,6 +1250,7 @@ composite_unbind(struct usb_gadget *gadget)
 
 	switch_dev_unregister(&cdev->sw_connected);
 	switch_dev_unregister(&cdev->sw_config);
+
 	kfree(cdev);
 	set_gadget_data(gadget, NULL);
 	device_remove_file(&gadget->dev, &dev_attr_suspended);
@@ -1289,11 +1286,12 @@ composite_switch_work(struct work_struct *data)
 		container_of(data, struct usb_composite_dev, switch_work);
 	struct usb_configuration *config = cdev->config;
 	int state = 0;
+	
 	int connected;
 	unsigned long flags;
-
+	
 	spin_lock_irqsave(&cdev->lock, flags);
-	if (cdev->connected != cdev->sw_connected.state) {
+	if(cdev->connected != cdev->sw_connected.state) {
 		connected = cdev->connected;
 		spin_unlock_irqrestore(&cdev->lock, flags);
 		switch_set_state(&cdev->sw_connected, connected);
@@ -1314,7 +1312,6 @@ composite_switch_work(struct work_struct *data)
 		state = (gctl & B_SESSION_VALID)?1:0;
 #endif
 	}
-
 
 	switch_set_state(&cdev->sw_config, state);
 }
@@ -1372,8 +1369,9 @@ static int composite_bind(struct usb_gadget *gadget)
 
 	cdev->sw_connected.name = "usb_connected";
 	status = switch_dev_register(&cdev->sw_connected);
-	if (status < 0)
+	if (status <0)
 		goto fail;
+		
 	cdev->sw_config.name = "usb_configuration";
 	status = switch_dev_register(&cdev->sw_config);
 	if (status < 0)

@@ -12,7 +12,7 @@ EXTRA_CFLAGS += -DCUSTOMER_HW_SAMSUNG
 EXTRA_CFLAGS += -DREAD_MACADDR
 
 # For 5G scan home channel time. (default=45 -> 60)
-EXTRA_CFLAGS += -DSCAN_5G_HOMECHANNEL_TIME
+#EXTRA_CFLAGS += -DSCAN_5G_HOMECHANNEL_TIME
 
 # For AUTH time patch
 EXTRA_CFLAGS += -DAUTH_TIME_PATCH
@@ -50,6 +50,7 @@ EXTRA_CFLAGS += -DPKT_FILTER_SUPPORT
 EXTRA_CFLAGS += -DWL_IW_USE_ESCAN
 #Disable PowerSave mode for OTA or certification test
 #EXTRA_CFLAGS += -DBCMDISABLE_PM
+EXTRA_CFLAGS += -DCONFIG_CONTROL_PM
 
 ###############################################################################################
 
@@ -66,7 +67,7 @@ EXTRA_LDFLAGS += --strip-debug
 KBUILD_CFLAGS += -I$(LINUXDIR)/include -I$(shell pwd)
 
 
-obj-$(CONFIG_BCM4329) += bcm4329.o
+obj-$(CONFIG_BCM4329) += bcm4329.o hotspot_event_monitoring.o
 bcm4329-objs := dhd_linux.o \
          dhd_common.o \
          dhd_cdc.o \
@@ -85,6 +86,7 @@ bcm4329-objs := dhd_linux.o \
          bcmsdh_linux.o \
          bcmsdh_sdmmc_linux.o \
          wl_iw.o
+
 
 ifeq ($(CONFIG_TARGET_LOCALE_KOR),y)
 bcm4329-objs := $(bcm4329-objs:dhd_common.o=dhd_common_skt.o)

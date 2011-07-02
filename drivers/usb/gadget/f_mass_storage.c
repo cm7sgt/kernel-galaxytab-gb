@@ -329,7 +329,11 @@ static const char fsg_string_interface[] = "Mass Storage";
 
 #define DRIVER_NAME             "usb_mass_storage"
 
+#if defined(CONFIG_MACH_P1_GSM)
+#define UMS_DISK_LUNS   2
+#elif defined(CONFIG_MACH_P1_CDMA)
 #define UMS_DISK_LUNS   1
+#endif
 
 #ifdef _ENABLE_CDFS_
 #define UMS_CDROM_LUNS  1

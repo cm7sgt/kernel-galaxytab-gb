@@ -159,9 +159,9 @@ struct ap_profile {
 	uint8	ssid[SSID_LEN];
 	uint8	sec[SEC_LEN];
 	uint8	key[KEY_LEN];
-	uint32	channel; 
+	uint32	channel;
 	uint32	preamble;
-	uint32	max_scb;	
+	uint32	max_scb;
 #ifdef NEW_AP_INTERFACE
 	uint32	hidden_ssid;
 	uint32	op_mode;

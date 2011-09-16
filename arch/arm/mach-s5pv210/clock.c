@@ -492,6 +492,14 @@ static struct clk init_clocks_disable[] = {
 		.parent		= &clk_p,
 		.enable		= s5pv210_clk_ip3_ctrl,
 		.ctrlbit	= (1 << 6),
+#if defined(CONFIG_MACH_P1_LTN) && defined(CONFIG_VIDEO_NM6XX)
+	}, {
+		.name		= "i2s_v32",
+		.id 	= 2,
+		.parent 	= &clk_p,
+		.enable 	= s5pv210_clk_ip3_ctrl,
+		.ctrlbit	= (1 << 6),
+#endif		
 	}, {
 		.name		= "pcm",
 		.id		= 2,
@@ -570,6 +578,15 @@ static struct clk init_clocks_disable[] = {
 		.enable		= s5pv210_clk_ip4_ctrl,
 		.ctrlbit	= (1 << 3),
 	},
+#if defined(CONFIG_VIDEO_TSI)
+	{
+		.name		= "tsi",
+		.id		= -1,
+		.parent 	= &clk_pclk_psys.clk,	
+		.enable		= s5pv210_clk_ip2_ctrl,
+		.ctrlbit	= S5P_CLKGATE_IP2_TSI,
+	}, 
+#endif
 };
 
 static struct clk init_dmaclocks[] = {

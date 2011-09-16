@@ -241,8 +241,11 @@ static int connector_detect_change(void)
 /* Not used
 static void acc_con_detect_timer_handler(unsigned long arg)
 {
-	ACC_CONDEV_DBG("");
-	acc_con_interrupt_init();
+	//ACC_CONDEV_DBG("");
+	ACC_CONDEV_DBG("S5P_NORMAL_CFG = 0x%08x",readl(S5P_NORMAL_CFG));
+	connector_detect_timer.expires = DETECTION_INTR_DELAY;
+	add_timer(&connector_detect_timer);
+	//acc_con_interrupt_init();
 }
 */
 

@@ -108,7 +108,7 @@
 //------------------------------------------------
 // Recording
 // Main MIC
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 #define TUNING_RECORD_MAIN_INPUTLINE_VOL 0x17 // 18h
 #define TUNING_RECORD_MAIN_AIF1ADCL_VOL 0xC0 // 400h
 #define TUNING_RECORD_MAIN_AIF1ADCR_VOL 0xC0 // 401h
@@ -133,7 +133,7 @@
 #define TUNING_RECORD_SUB_AIF1ADCL_VOL 0xC0 // 400h
 #define TUNING_RECORD_SUB_AIF1ADCR_VOL 0xC0 // 401h
 
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 #define TUNING_RECOGNITION_SUB_INPUTMIX_VOL 0x0A // 1Ah
 #elif defined(CONFIG_MACH_P1_CDMA)
 #define TUNING_RECOGNITION_SUB_INPUTMIX_VOL 0x10 // 1Ah
@@ -974,7 +974,7 @@ void wm8994_record_headset_mic(struct snd_soc_codec *codec)
 
 	DEBUG_LOG("Recording through Headset Mic\n");
 
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 	audio_ctrl_mic_bias_gpio(0);	
 	audio_ctrl_earmic_bias_gpio(1);
 
@@ -1161,7 +1161,7 @@ void wm8994_record_main_mic(struct snd_soc_codec *codec)
 	DEBUG_LOG("Recording through Main Mic\n");
 	audio_ctrl_mic_bias_gpio(1);
 
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 	if(!(wm8994->codec_state & CALL_ACTIVE))	// Normal case
 	{
 		// Disable FM radio path
@@ -1724,7 +1724,7 @@ void wm8994_set_playback_headset(struct snd_soc_codec *codec)
 
 	//Enable vmid,bias, hp left and right
 	val = wm8994_read(codec,WM8994_POWER_MANAGEMENT_1 );
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 	val &= ~(WM8994_BIAS_ENA_MASK | WM8994_VMID_SEL_MASK |WM8994_HPOUT1L_ENA_MASK |WM8994_HPOUT1R_ENA_MASK | WM8994_SPKOUTL_ENA_MASK | WM8994_SPKOUTR_ENA_MASK );
 #elif defined(CONFIG_MACH_P1_CDMA)
 	val &= ~(WM8994_BIAS_ENA_MASK | WM8994_VMID_SEL_MASK |WM8994_HPOUT1L_ENA_MASK |WM8994_HPOUT1R_ENA_MASK);
@@ -1827,7 +1827,7 @@ void wm8994_set_playback_speaker(struct snd_soc_codec *codec)
 
 	//Disable end point for preventing pop up noise.
 	val = wm8994_read(codec,WM8994_POWER_MANAGEMENT_1);
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 	val &= ~(WM8994_SPKOUTL_ENA_MASK | WM8994_SPKOUTR_ENA_MASK | WM8994_HPOUT1L_ENA_MASK | WM8994_HPOUT1R_ENA_MASK);
 #elif defined(CONFIG_MACH_P1_CDMA)
 	val &= ~(WM8994_SPKOUTL_ENA_MASK);
@@ -1910,7 +1910,7 @@ void wm8994_set_playback_speaker(struct snd_soc_codec *codec)
 	wm8994_write(codec,WM8994_DAC1_RIGHT_VOLUME,val);
 
 	val = wm8994_read(codec, WM8994_AIF1_DAC1_LEFT_VOLUME);
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 	val &= ~(WM8994_AIF1DAC1L_VOL_MASK);
 #elif defined(CONFIG_MACH_P1_CDMA)
 	val &= ~(WM8994_DAC1L_MUTE_MASK | WM8994_DAC1L_VOL_MASK);
@@ -2107,7 +2107,7 @@ void wm8994_set_playback_speaker_headset(struct snd_soc_codec *codec)
 
 	val = wm8994_read(codec, WM8994_POWER_MANAGEMENT_1);
 	val &= ~(WM8994_BIAS_ENA_MASK | WM8994_VMID_SEL_MASK |
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 		WM8994_HPOUT1L_ENA_MASK | WM8994_HPOUT1R_ENA_MASK | WM8994_SPKOUTL_ENA_MASK | WM8994_SPKOUTR_ENA_MASK );
 #elif defined(CONFIG_MACH_P1_CDMA)
 		WM8994_HPOUT1L_ENA_MASK | WM8994_HPOUT1R_ENA_MASK | WM8994_SPKOUTL_ENA_MASK);
@@ -2413,7 +2413,7 @@ void wm8994_set_playback_extra_dock_speaker(struct snd_soc_codec *codec)
 	wm8994_write(codec, WM8994_CLOCKING_1, val);
 
 	val = wm8994_read(codec,WM8994_POWER_MANAGEMENT_3);
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 	val &= ~(WM8994_MIXOUTLVOL_ENA_MASK | WM8994_MIXOUTRVOL_ENA_MASK | WM8994_MIXOUTL_ENA_MASK | WM8994_MIXOUTR_ENA_MASK);
 	val |= (WM8994_MIXOUTL_ENA | WM8994_MIXOUTR_ENA | WM8994_MIXOUTRVOL_ENA | WM8994_MIXOUTLVOL_ENA);
 #elif defined(CONFIG_MACH_P1_CDMA)
@@ -2423,7 +2423,7 @@ void wm8994_set_playback_extra_dock_speaker(struct snd_soc_codec *codec)
 	wm8994_write(codec,WM8994_POWER_MANAGEMENT_3,val);
 
 	val = wm8994_read(codec,WM8994_POWER_MANAGEMENT_1 );
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 	val &= ~(WM8994_BIAS_ENA_MASK | WM8994_VMID_SEL_MASK | WM8994_HPOUT2_ENA_MASK  | WM8994_HPOUT1L_ENA_MASK | WM8994_HPOUT1R_ENA_MASK 
 		| WM8994_SPKOUTL_ENA_MASK | WM8994_SPKOUTR_ENA_MASK);
 #elif defined(CONFIG_MACH_P1_CDMA)
@@ -2445,7 +2445,7 @@ void wm8994_set_playback_extra_dock_speaker(struct snd_soc_codec *codec)
 	val |= WM8994_LINEOUT_VMID_BUF_ENA ;
 	wm8994_write(codec,WM8994_ANTIPOP_1,val);
 
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 	msleep(230);
 
 	val = wm8994_read(codec, WM8994_POWER_MANAGEMENT_3);
@@ -2503,7 +2503,7 @@ void wm8994_set_voicecall_common_setting(struct snd_soc_codec *codec)
 	/*GPIO Configuration*/
 	wm8994_write(codec, WM8994_GPIO_1, 0xA101);
 	wm8994_write(codec, WM8994_GPIO_2, 0x8100);
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 	wm8994_write(codec, WM8994_GPIO_3, 0x0100);
 	wm8994_write(codec, WM8994_GPIO_4, 0x0100);
 	wm8994_write(codec, WM8994_GPIO_5, 0x8100);
@@ -2526,7 +2526,7 @@ void wm8994_set_voicecall_common_setting(struct snd_soc_codec *codec)
 	wm8994_write(codec, WM8994_FLL2_CONTROL_5, 0x0C88);
 //	wm8994_write(codec, WM8994_FLL2_CONTROL_5, 0x0C89);	// CP 24MHz
 	wm8994_write(codec, WM8994_FLL2_CONTROL_1, WM8994_FLL2_FRACN_ENA | WM8994_FLL2_ENA);
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 	val = wm8994_read(codec, WM8994_AIF2_CLOCKING_1);
 	if(!(val & WM8994_AIF2CLK_ENA))
 		wm8994_write(codec, WM8994_AIF2_CLOCKING_1, 0x0018);
@@ -2541,7 +2541,7 @@ void wm8994_set_voicecall_common_setting(struct snd_soc_codec *codec)
 
 	wm8994_write(codec, WM8994_AIF2_BCLK, 0x70);
 	wm8994_write(codec, WM8994_AIF2_CONTROL_2, 0x0000);
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 	wm8994_write(codec, WM8994_AIF2_MASTER_SLAVE, WM8994_AIF2_MSTR | WM8994_AIF2_CLK_FRC | WM8994_AIF2_LRCLK_FRC);	//Master
 #elif defined(CONFIG_MACH_P1_CDMA)
 	wm8994_write(codec, WM8994_AIF2_MASTER_SLAVE, 0x0000);
@@ -2641,7 +2641,7 @@ void wm8994_set_voicecall_receiver(struct snd_soc_codec *codec)
 	wm8994_write(codec, WM8994_DAC2_LEFT_MIXER_ROUTING, WM8994_ADC1_TO_DAC2L);	
 	wm8994_write(codec, WM8994_DAC2_RIGHT_MIXER_ROUTING, WM8994_ADC1_TO_DAC2R);
 
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 	wm8994_write(codec, WM8994_AIF2_CLOCKING_1, 0x0019);
 #endif
 
@@ -2654,7 +2654,7 @@ void wm8994_set_voicecall_receiver(struct snd_soc_codec *codec)
 	//Unmute the PGA
 	val = wm8994_read(codec, WM8994_INPUT_MIXER_3);
 	val&= ~(WM8994_IN1L_TO_MIXINL_MASK | WM8994_IN1L_MIXINL_VOL_MASK | WM8994_MIXOUTL_MIXINL_VOL_MASK);
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 	val |= (WM8994_IN1L_TO_MIXINL |TUNING_CALL_RCV_MIXER_VOL);//30db
 #elif defined(CONFIG_MACH_P1_CDMA)
 	val |= (WM8994_IN1L_TO_MIXINL |WM8994_IN1L_MIXINL_VOL);//30db
@@ -2674,7 +2674,7 @@ void wm8994_set_voicecall_receiver(struct snd_soc_codec *codec)
 
 	val = wm8994_read(codec, WM8994_LEFT_OPGA_VOLUME);
 	val &= ~(WM8994_MIXOUTL_MUTE_N_MASK | WM8994_MIXOUTL_VOL_MASK);
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 	val |= (WM8994_MIXOUTL_MUTE_N | TUNING_RCV_OPGAL_VOL);
 #elif defined(CONFIG_MACH_P1_CDMA)
 	val |= (WM8994_MIXOUT_VU | WM8994_MIXOUTL_MUTE_N | TUNING_RCV_OPGAL_VOL);
@@ -2700,7 +2700,7 @@ void wm8994_set_voicecall_receiver(struct snd_soc_codec *codec)
 	//Unmute and volume ctrl RightDAC
 	val = wm8994_read(codec, WM8994_DAC1_RIGHT_VOLUME ); 
 	val &= ~(WM8994_DAC1R_MUTE_MASK | WM8994_DAC1R_VOL_MASK);
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 	val |= (WM8994_DAC1_VU | TUNING_DAC1R_VOL); //0 db volume	
 #elif defined(CONFIG_MACH_P1_CDMA)
 	val |= TUNING_DAC1R_VOL; //0 db volume	
@@ -3032,7 +3032,7 @@ void wm8994_set_voicecall_headset(struct snd_soc_codec *codec)
 		val = wm8994_read(codec,WM8994_RIGHT_LINE_INPUT_1_2_VOLUME);	
 		val &= ~(WM8994_IN1R_MUTE_MASK | WM8994_IN1R_VOL_MASK); // Unmute IN1R
 		val |= (WM8994_IN1R_VU | TUNING_LOOPBACK_EAR_INPUTMIX_VOL);
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 		wm8994_write(codec,WM8994_RIGHT_LINE_INPUT_1_2_VOLUME,val);
 #elif defined(CONFIG_MACH_P1_CDMA)
 		wm8994_write(codec,WM8994_RIGHT_LINE_INPUT_1_2_VOLUME,0x010B);
@@ -3057,7 +3057,7 @@ void wm8994_set_voicecall_headset(struct snd_soc_codec *codec)
 		val = wm8994_read(codec,WM8994_LEFT_OUTPUT_VOLUME);
 		val &= ~(WM8994_HPOUT1L_MUTE_N_MASK | WM8994_HPOUT1L_VOL_MASK);
 		val |= (WM8994_HPOUT1L_MUTE_N | TUNING_LOOPBACK_OUTPUTL_VOL);
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 		wm8994_write(codec, WM8994_LEFT_OUTPUT_VOLUME, val);
 #elif defined(CONFIG_MACH_P1_CDMA)
 		wm8994_write(codec, WM8994_LEFT_OUTPUT_VOLUME, 0x007F);
@@ -3066,7 +3066,7 @@ void wm8994_set_voicecall_headset(struct snd_soc_codec *codec)
 		val = wm8994_read(codec,WM8994_RIGHT_OUTPUT_VOLUME);
 		val &= ~(WM8994_HPOUT1R_MUTE_N_MASK | WM8994_HPOUT1R_VOL_MASK);
 		val |= (WM8994_HPOUT1_VU | WM8994_HPOUT1R_MUTE_N | TUNING_LOOPBACK_OUTPUTR_VOL);
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 		wm8994_write(codec, WM8994_RIGHT_OUTPUT_VOLUME, val);
 #elif defined(CONFIG_MACH_P1_CDMA)
 		wm8994_write(codec, WM8994_RIGHT_OUTPUT_VOLUME, 0x017F);
@@ -3224,7 +3224,7 @@ void wm8994_set_voicecall_speaker(struct snd_soc_codec *codec)
 
 	val = wm8994_read(codec,WM8994_POWER_MANAGEMENT_1 );
 	val &= ~(WM8994_BIAS_ENA_MASK | WM8994_VMID_SEL_MASK |WM8994_SPKOUTL_ENA_MASK | WM8994_SPKOUTR_ENA_MASK);
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 	val |= (WM8994_BIAS_ENA | WM8994_VMID_SEL_NORMAL | WM8994_SPKOUTL_ENA | WM8994_SPKOUTR_ENA);  
 #elif defined(CONFIG_MACH_P1_CDMA)
 	val |= (WM8994_BIAS_ENA | WM8994_VMID_SEL_NORMAL | WM8994_SPKOUTL_ENA);  
@@ -3268,7 +3268,7 @@ void wm8994_set_voicecall_speaker(struct snd_soc_codec *codec)
 
 void wm8994_set_voicecall_bluetooth(struct snd_soc_codec *codec)
 {
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 	int val;
 
 	wm8994_set_voicecall_common_setting(codec);
@@ -3700,7 +3700,7 @@ void wm8994_set_fmradio_headset(struct snd_soc_codec *codec)
 
 	u16 val;
 	
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 	u16 nReadServo4Val = 0;
 	u16 ncompensationResult = 0;
 	u16 nCompensationResultLow=0;
@@ -4105,7 +4105,7 @@ void wm8994_set_fmradio_speaker(struct snd_soc_codec *codec)
 
 	DEBUG_LOG("Routing spk path : FM Radio -> SPK Out");
 
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 	wm8994_disable_fmradio_path(codec, FMR_HP);
 
 	wm8994->fmradio_path = FMR_SPK;

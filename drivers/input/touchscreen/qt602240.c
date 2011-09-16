@@ -360,7 +360,7 @@ static void release_all_fingers(struct input_dev *input_dev)
 {
 	int i;
 
-	printk(KERN_DEBUG "[TSP] %s\n", __func__);
+//	printk(KERN_DEBUG "[TSP] %s\n", __func__);
 
 	for ( i= 0; i<MAX_USING_FINGER_NUM; ++i )
 	{
@@ -393,7 +393,7 @@ static void release_all_keys(struct input_dev *input_dev)
 		{
 		input_report_key(input_dev, tsp_keycodes[i], 0);
 		input_sync(input_dev);
-		printk(KERN_DEBUG "[TSP] %s key is pseudo release. Keycode : %d\n", tsp_keyname[i], tsp_keycodes[i]);
+//		printk(KERN_DEBUG "[TSP] %s key is pseudo release. Keycode : %d\n", tsp_keyname[i], tsp_keycodes[i]);
 		tsp_keystatus[i] = KEY_RELEASE;
 		}
 	}
@@ -1275,9 +1275,9 @@ static void qt602240_input_read(struct qt602240_data *data)
 		if (object < 0) {
 			printk(KERN_ERR "[TSP] Couldn't get the object : QT602240_GEN_COMMAND \n");
 			goto soft_reset;
-		} else
-			printk(KERN_DEBUG "[TSP] msg:0x%x\n", message->message[0]);
-
+		} else {
+//			printk(KERN_DEBUG "[TSP] msg:0x%x\n", message->message[0]);
+        }
 		if (((message->message[0])&0x80) == 0x80 ||((message->message[0])&0x10) == 0x10)
 			release_all_fingers(input_dev);
 

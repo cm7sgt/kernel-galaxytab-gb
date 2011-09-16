@@ -190,7 +190,7 @@ static const struct attribute_group modemctl_group = {
 extern void onedram_init_mailbox(void);
 static void xmm_reset(struct modemctl *mc);
 
-#if defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 static void xmm_on(struct modemctl *mc)
 {
 	dev_dbg(mc->dev, "%s\n", __func__);

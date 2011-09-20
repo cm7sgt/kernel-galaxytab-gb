@@ -525,7 +525,7 @@
 #define GPIO_WLAN_BT_EN			S5PV210_GPJ1(0)
 #elif defined(CONFIG_MACH_P1_GSM)
 /* On GSM */
-#define GPIO_CAM_FLASH_EN_SET	S5PV210_GPJ1(0)
+// S5PV210_GPJ1(0) is not connected to anything on P1-GSM
 #endif
 
 #define GPIO_VIBTONE_EN1		S5PV210_GPJ1(1)

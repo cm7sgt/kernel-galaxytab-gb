@@ -6645,7 +6645,8 @@ static unsigned int p1_r12_sleep_gpio_table[][3] = {
 	{S5PV210_GPI(6),  // NC
 			S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN}, 
 
-#if defined(CONFIG_MACH_P1_LTN) && defined(CONFIG_VIDEO_NM6XX)
+#if defined(CONFIG_MACH_P1_LTN) 
+#if defined(CONFIG_VIDEO_NM6XX)
 	{S5PV210_GPJ0(0),  // ISDBT_SCL
 			S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_NONE}, 
 	{S5PV210_GPJ0(1),  // ISDBT_SDA
@@ -6660,7 +6661,7 @@ static unsigned int p1_r12_sleep_gpio_table[][3] = {
 			S3C_GPIO_SLP_OUT0, S3C_GPIO_PULL_DOWN},  
 	{S5PV210_GPJ0(6), // ISDBT_ERR
 			S3C_GPIO_SLP_OUT0, S3C_GPIO_PULL_DOWN}, 
-#elif defined(CONFIG_MACH_P1_LTN) // ys325.chang 2011.03.04
+#else
 	{S5PV210_GPJ0(0),  // ISDBT_SCL
 			S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN}, 
 	{S5PV210_GPJ0(1),  // ISDBT_SDA
@@ -6675,6 +6676,7 @@ static unsigned int p1_r12_sleep_gpio_table[][3] = {
 			S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},  
 	{S5PV210_GPJ0(6), // ISDBT_ERR
 			S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN}, 
+#endif
 #else
 //	{S5PV210_GPJ0(0),  // GPIO_WLAN_BT_EN
 //			S3C_GPIO_SLP_OUT0, S3C_GPIO_PULL_NONE}, 
@@ -6693,12 +6695,16 @@ static unsigned int p1_r12_sleep_gpio_table[][3] = {
 #endif
 	{S5PV210_GPJ0(7), 
 			S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_NONE}, 
-
+#if defined(CONFIG_MACH_P1_LTN)
+//	{S5PV210_GPJ1(0),   // GPIO_WLAN_BT_EN
+//			S3C_GPIO_SLP_OUT0, S3C_GPIO_PULL_NONE}, 
+#else
 	{S5PV210_GPJ1(0),  // NC
-#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
+#if defined(CONFIG_MACH_P1_GSM)
 			S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN}, 
 #elif defined(CONFIG_MACH_P1_CDMA)
 			S3C_GPIO_SLP_OUT0, S3C_GPIO_PULL_NONE}, 
+#endif
 #endif
 	{S5PV210_GPJ1(1),  // MESSMEMORY_EN
 #if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
@@ -7862,13 +7868,7 @@ static unsigned int p1_get_hwrev(void)
 			sprintf(model_str, "P2");
 			break;
 		case 2:
-#if defined(CONFIG_MACH_P1_LTN)
-#if defined(CONFIG_VIDEO_NM6XX)
-			sprintf(model_str, "GT-P1000L");
-#else
-			sprintf(model_str, "GT-P1000N");
-#endif
-#elif defined(CONFIG_MACH_P1_GSM)
+#if defined(CONFIG_MACH_P1_GSM) || defined(CONFIG_MACH_P1_LTN)
 			sprintf(model_str, "GT-P1000");
 #elif defined(CONFIG_MACH_P1_CDMA)
 			sprintf(model_str, "SPH-P100");

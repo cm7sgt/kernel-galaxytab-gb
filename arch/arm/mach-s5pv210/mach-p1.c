@@ -7728,6 +7728,9 @@ static struct platform_device *crespo_devices[] __initdata = {
 #if defined(CONFIG_VIDEO_TSI)
 	&s3c_device_tsi,
 #endif	
+#if defined(CONFIG_MACH_P1_CDMA)
+	&sec_device_dpram,
+#endif
 };
 
 unsigned int HWREV;
